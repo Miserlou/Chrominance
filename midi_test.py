@@ -38,8 +38,6 @@ def _print_device_info():
                (i, interf, name, opened, in_out))
         
 
-
-
 def input_main(device_id = None):
     pygame.init()
     pygame.fastevent.init()
