@@ -1,6 +1,8 @@
 #! /usr/bin/python2.7
+# coding: utf-8
 
 import pygame
+import pygame.midi
 from pygame.locals import *
 
 def handleEvents():
@@ -12,10 +14,14 @@ def handleEvents():
 
 pygame.init()
 pygame.font.init()
+pygame.midi.init()
+input_id = pygame.midi.get_default_input_id()
+i = pygame.midi.Input( input_id )
 
 #MBAir: 1440x900
 #Ubu: 1920x1080
 screen = pygame.display.set_mode((1920,1080),pygame.FULLSCREEN)
+screen.set_caption("CHROMIN∀NCƎ")
 
 background = pygame.Surface(screen.get_size())
 background = background.convert()
