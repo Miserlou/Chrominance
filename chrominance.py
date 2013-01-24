@@ -14,28 +14,38 @@ def handleEvents():
 
 def handleMIDIEvents(i, screen):
     if i.poll():
-        midi_events = i.read(10)
-        print "MIDI note is " + str(midi_events[0][0][1])
+        midi_events = i.read(60)
+
+        note = midi_events[0][0][1]
+        if note == 0:
+            return
+
+        print midi_events[0]
+        print midi_events
         print dir(midi_events)
+        print '\n'
+
         # convert them into pygame events.
         midi_evs = pygame.midi.midis2events(midi_events, i.device_id)
 
-        mono = pygame.font.SysFont("monospace", 15)
-        label = mono.render(str(midi_events[0][0][1], 1, (255,255,0))
+        mono = pygame.font.SysFont("monospace", 72)
+        label = mono.render(str(midi_events[0][0][1]), 1, (255,255,0))
         screen.blit(label, (100, 100))
-
-        for m_e in midi_evs:
-                event_post( m_e )
 
 pygame.init()
 pygame.font.init()
 pygame.midi.init()
 input_id = pygame.midi.get_default_input_id()
-i = pygame.midi.Input( input_id )
+i = pygame.midi.Input( input_id, 60 )
 
 #MBAir: 1440x900
 #Ubu: 1920x1080
-screen = pygame.display.set_mode((1440,900),pygame.FULLSCREEN)
+
+x, y = pygame.display.list_modes()[0]
+screen = pygame.display.set_mode((x,y),pygame.FULLSCREEN)
+
+event_get = pygame.event.get
+event_post = pygame.event.post
 
 background = pygame.Surface(screen.get_size())
 background = background.convert()
@@ -47,12 +57,8 @@ clock = pygame.time.Clock()
 
 while 1:
 
-    handleMIDIEvents(i, screen)
-    handleEvents()
-
     background.fill((r, g, b))
     screen.blit(background, (0, 0))
-    pygame.display.flip()
 
     if r > 249:
         d = d * -1
@@ -62,4 +68,8 @@ while 1:
     g = g + d
     b = b + d
 
-    clock.tick(60)
+    handleMIDIEvents(i, screen)
+    handleEvents()
+
+    pygame.display.flip()
+    clock.tick(120)
