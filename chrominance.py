@@ -1,5 +1,5 @@
 #! /usr/bin/python2.7
-# coding: utf-8
+# Coding: utf-8
 
 import pygame
 import pygame.midi
@@ -20,8 +20,7 @@ i = pygame.midi.Input( input_id )
 
 #MBAir: 1440x900
 #Ubu: 1920x1080
-screen = pygame.display.set_mode((1920,1080),pygame.FULLSCREEN)
-screen.set_caption("CHROMIN∀NCƎ")
+screen = pygame.display.set_mode((1440,900),pygame.FULLSCREEN)
 
 background = pygame.Surface(screen.get_size())
 background = background.convert()
