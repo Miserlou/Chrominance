@@ -9,6 +9,10 @@ This is an experiment.
 * PyGame
 * MIDI keyboard + adapter
 
+## Ubuntu Install
+
+Who fuckin' knows. http://stackoverflow.com/questions/14493857/midi-on-python-pygame-ubuntu-12-04
+
 ## OSX Install
 
     brew install python
