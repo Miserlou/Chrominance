@@ -21,3 +21,4 @@ Who fuckin' knows. http://stackoverflow.com/questions/14493857/midi-on-python-py
 ## Test PyGame MIDI
 
     python -m pygame.examples.midi --list
+    python -m pygame.examples.midi --input
