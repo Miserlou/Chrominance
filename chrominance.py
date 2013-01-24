@@ -12,6 +12,21 @@ def handleEvents():
         elif event.type == KEYDOWN and event.key == K_ESCAPE:
            quit()
 
+def handleMIDIEvents(i, screen):
+    if i.poll():
+        midi_events = i.read(10)
+        print "MIDI note is " + str(midi_events[0][0][1])
+        print dir(midi_events)
+        # convert them into pygame events.
+        midi_evs = pygame.midi.midis2events(midi_events, i.device_id)
+
+        mono = pygame.font.SysFont("monospace", 15)
+        label = mono.render(str(midi_events[0][0][1], 1, (255,255,0))
+        screen.blit(label, (100, 100))
+
+        for m_e in midi_evs:
+                event_post( m_e )
+
 pygame.init()
 pygame.font.init()
 pygame.midi.init()
@@ -32,6 +47,7 @@ clock = pygame.time.Clock()
 
 while 1:
 
+    handleMIDIEvents(i, screen)
     handleEvents()
 
     background.fill((r, g, b))
