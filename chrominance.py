@@ -17,6 +17,14 @@ class Chrominance():
     b = 2
     d = 1
 
+    sat = 1
+
+    def fill(self, r, g, b):
+        self.r = r
+        self.g = g
+        self.b = b
+        self.background.fill((self.r * self.sat, self.g * self.sat, self.b * self.sat))
+
     def handleEvents(self):
 
         events = self.event_get()
@@ -26,32 +34,71 @@ class Chrominance():
             if e.type == KEYDOWN and e.key == K_ESCAPE:
                quit()
             if e.type in [pygame.midi.MIDIIN] and e.status != 248:
+                
+
+                if e.data1 >= 12 and e.data1 <= 120 and e.data2 != 64:
+
+                    color = e.data1 % 12
+
+                    if color == 0:
+                        self.fill(255, 0, 0)
+                    elif color == 1:
+                        self.fill(255, 139, 0)
+                    elif color == 2:
+                        self.fill(255, 255, 0)
+                    elif color == 3:
+                        self.fill(070,255,0)
+                    elif color == 4:
+                        self.fill(0,255,031)
+                    elif color == 5:
+                        self.fill(0,255,158)
+                    elif color == 6:
+                        self.fill(0,255,255)
+                    elif color == 7:
+                        self.fill(0,155,255)
+                    elif color == 8:
+                        self.fill(78,0,255)
+                    elif color == 9:
+                        self.fill(189,0,255)
+                    elif color == 10:
+                        self.fill(255,0,255)
+                    elif color == 11:
+                        self.fill(255,41,147)
 
                 # Mod wheel!
                 if e.status == 176 and e.data1 == 1:
                     self.oscillate = False
-                    self.r = min(e.data2 * 2 + 1, 254)
-                    self.g = min(e.data2 * 2 + 1, 254)
-                    self.b = min(e.data2 * 2 + 1, 254)
+                    # self.r = min(e.data2 * 2 + 1, 254)
+                    # self.g = min(e.data2 * 2 + 1, 254)
+                    # self.b = min(e.data2 * 2 + 1, 254)
 
-                # Cutoff knob!
-                if e.status == 176 and e.data1 == 74:
-                    self.oscillate = True
-                    self.r = min(e.data2 * 2 + 1, 254)
+                    #self.sat = e.data2
+                    #v = e.data2/127
+                    #v = e / 1
 
-                # Resonsance knob!
-                if e.status == 176 and e.data1 == 71:
-                    self.oscillate = True
-                    self.g = min(e.data2 * 2 + 1, 254)
+                    OldRange = (127.0 - 0.0)  
+                    NewRange = (1.0 - 0.0)  
+                    self.sat = (((e.data2 * 1.0 - 0) * NewRange) / OldRange) + 0
+                    self.fill(self.r, self.g, self.b)
 
-                # Resonsance knob!
-                if e.status == 176 and e.data1 == 73:
-                    self.oscillate = True
-                    self.b = min(e.data2 * 2 + 1, 254)
 
-                print str(e)
-                label = self.mono.render(str(e.data2), 1, self.get_random_color())
-                self.screen.blit(label, self.get_random_screen_location())
+                # # Cutoff knob!
+                # if e.status == 176 and e.data1 == 74:
+                #     self.oscillate = True
+                #     self.r = min(e.data2 * 2 + 1, 254)
+
+                # # Resonsance knob!
+                # if e.status == 176 and e.data1 == 71:
+                #     self.oscillate = True
+                #     self.g = min(e.data2 * 2 + 1, 254)
+
+                # # Resonsance knob!
+                # if e.status == 176 and e.data1 == 73:
+                #     self.oscillate = True
+                #     self.b = min(e.data2 * 2 + 1, 254)
+
+                #label = self.mono.render(str(e.data2), 1, self.get_random_color())
+                #self.screen.blit(label, self.get_random_screen_location())
 
         if self.i.poll():
             midi_events = self.i.read(10)
@@ -109,17 +156,16 @@ class Chrominance():
     def run(self):
         while 1:
 
-            self.background.fill((self.r, self.g, self.b))
             self.screen.blit(self.background, (0, 0))
 
-            if self.oscillate:
-                if self.r > 249 or self.b > 249 or self.g > 249:
-                    self.d = self.d * -1
-                if self.r < 2 or self.b <2 or self.g < 2:
-                    self.d = self.d * -1
-                self.r = self.r + self.d
-                self.g = self.g + self.d
-                self.b = self.b + self.d
+            #if self.oscillate:
+            #    if self.r > 249 or self.b > 249 or self.g > 249:
+            #        self.d = self.d * -1
+            #    if self.r < 2 or self.b <2 or self.g < 2:
+            #        self.d = self.d * -1
+            #    self.r = self.r + self.d
+            #    self.g = self.g + self.d
+            #    self.b = self.b + self.d
 
             self.r = max(self.r, 0)
             self.g = max(self.g, 0)
